@@ -11,6 +11,12 @@ public class Bridge : MonoBehaviour {
 	[SerializeField]
 	private float sectionOffset = 1.0f;
 	[SerializeField]
+	private float startSectionOffset = -50.0f;
+	[SerializeField]
+	private float stagger = 0.5f;
+	//[SerializeField]
+	private float introDuration = 1.0f;
+	[SerializeField]
 	private float sectionYoffset = 1.0f;
 	[SerializeField]
 	private List<GameObject> bridgeSections = new List<GameObject>();
@@ -18,18 +24,27 @@ public class Bridge : MonoBehaviour {
 //	private BridgeSection[] bridgeSections;
 	[SerializeField]
 	private Vector3 rotationAxis = new Vector3(0.0f, 0.0f, 1.0f);
+	private List<Vector3> targetPositions = new List<Vector3>();
+
+	float staggerCounter = 0.0f;
+	bool intro = false;
 	
 
 	// Use this for initialization
 	void Start ()
 	{
 		CreateSections();
-		PlaceSections();
+		GetPositions();
+		StartCoroutine(PlaceSections());
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		
+	void Update ()
+	{
+		if (intro)
+		{
+			staggerCounter -= Time.deltaTime;
+		}
 	}
 
 	private void CreateSections()
@@ -40,7 +55,7 @@ public class Bridge : MonoBehaviour {
 		}
 	}
 
-	private void PlaceSections()
+	private void GetPositions()
 	{
 		int it = 0;
 		
@@ -49,11 +64,46 @@ public class Bridge : MonoBehaviour {
 			Vector3 nuPos = section.transform.localPosition;
 			nuPos.z = -sectionOffset + (it * sectionOffset);
 			nuPos.y += sectionYoffset;
+			targetPositions.Add(nuPos);
+			nuPos.y = startSectionOffset;
 			section.transform.localPosition = nuPos;
+			section.transform.localScale = new Vector3(0.001f, 0.001f, 0.001f);
 			section.GetComponent<BridgeSection>().SetRotationAxis(rotationAxis);
 			it++;
 		}
 	}
 
+	IEnumerator PlaceSections()
+	{
+		intro = true;
+		staggerCounter = stagger;
+		
+		bridgeSections[0].GetComponent<BridgeSection>().RaiseSection(targetPositions[0], introDuration);
+		while (staggerCounter > 0.0f)
+		{
+			yield return null;
+		}
+		staggerCounter = stagger;
 
+		bridgeSections[1].GetComponent<BridgeSection>().RaiseSection(targetPositions[1], introDuration);
+		while (staggerCounter > 0.0f)
+		{
+			yield return null;
+		}
+		staggerCounter = stagger;
+
+		bridgeSections[2].GetComponent<BridgeSection>().RaiseSection(targetPositions[2], introDuration);
+		while (staggerCounter > 0.0f)
+		{
+			yield return null;
+		}
+		intro = false;
+		yield return null;
+		
+	}
+
+	public float GetStagger()
+	{
+		return stagger;
+	}
 }

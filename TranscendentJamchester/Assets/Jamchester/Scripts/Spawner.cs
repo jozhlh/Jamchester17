@@ -25,7 +25,7 @@ public class Spawner : MonoBehaviour
 
 	// Use this for initialization
 	void Start () {
-		
+		counter = spawnCounter;
 	}
 	
 	// Update is called once per frame
