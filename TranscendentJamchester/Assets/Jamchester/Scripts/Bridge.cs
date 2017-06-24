@@ -11,6 +11,8 @@ public class Bridge : MonoBehaviour {
 	[SerializeField]
 	private float sectionOffset = 1.0f;
 	[SerializeField]
+	private float sectionYoffset = 1.0f;
+	[SerializeField]
 	private List<GameObject> bridgeSections = new List<GameObject>();
 //	[SerializeField]
 //	private BridgeSection[] bridgeSections;
@@ -46,6 +48,7 @@ public class Bridge : MonoBehaviour {
 		{
 			Vector3 nuPos = section.transform.localPosition;
 			nuPos.z = -sectionOffset + (it * sectionOffset);
+			nuPos.y += sectionYoffset;
 			section.transform.localPosition = nuPos;
 			section.GetComponent<BridgeSection>().SetRotationAxis(rotationAxis);
 			it++;
