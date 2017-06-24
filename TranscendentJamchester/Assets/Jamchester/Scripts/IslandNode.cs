@@ -32,7 +32,7 @@ public class IslandNode : MonoBehaviour
 		{
 			CreateIsland();
 		}
-		
+		particle = GetComponentInChildren<ParticleSystem>();
 	}
 
 	/// <summary>

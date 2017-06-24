@@ -55,24 +55,28 @@ public class CharacterMovement : MonoBehaviour
 	/// <param name="other">The other Collider involved in this collision.</param>
 	void OnTriggerEnter(Collider other)
 	{
-		if (other.tag == "Hazard")
+		if (!dying)
 		{
-			Death();
-		}
-		else if (other.tag == "Town")
-		{
-			//Found Town
-			other.GetComponentInParent<IslandNode>().CreateTown();
-			killChar = true;
-		}
-		else if (other.tag == "Spawner")
-		{
-			if (lifetime > 1.0f)
+			if (other.tag == "Hazard")
 			{
-				other.GetComponent<Spawner>().AddPerson();
+				Death();
+			}
+			else if (other.tag == "Town")
+			{
+				//Found Town
+				other.GetComponentInParent<IslandNode>().CreateTown();
 				killChar = true;
 			}
+			else if (other.tag == "Spawner")
+			{
+				if (lifetime > 1.0f)
+				{
+					other.GetComponent<Spawner>().AddPerson();
+					killChar = true;
+				}
+			}
 		}
+		
 	}
 
 	void Death()
