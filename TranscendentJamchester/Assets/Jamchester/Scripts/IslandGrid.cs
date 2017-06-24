@@ -11,7 +11,7 @@ public class IslandGrid : MonoBehaviour
 	private float bridgeYOffset = 0.5f;
 	[Header("Island Parameters")]
 	[SerializeField]
-	private GameObject islandNodePrefab;
+	private List<GameObject> islandNodePrefabs = new List<GameObject>();
 	[SerializeField]
 	private float spacing = 4.0f;
 	[SerializeField]
@@ -101,7 +101,8 @@ public class IslandGrid : MonoBehaviour
 	{
 		if (!islandNodes.ContainsKey(coord))
 		{
-			islandNodes.Add(coord, Instantiate(islandNodePrefab, GetIslandPosition(), transform.rotation));
+			int num = Random.Range(0, islandNodePrefabs.Count);
+			islandNodes.Add(coord, Instantiate(islandNodePrefabs[num], GetIslandPosition(), transform.rotation));
 			islandNodes[coord].GetComponent<IslandNode>().SetNodeCoords(coord);
 			PlaceBridge();
 			return true;

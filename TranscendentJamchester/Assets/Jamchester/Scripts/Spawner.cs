@@ -24,7 +24,8 @@ public class Spawner : MonoBehaviour
 	
 
 	// Use this for initialization
-	void Start () {
+	void Start ()
+	{
 		counter = spawnCounter;
 	}
 	

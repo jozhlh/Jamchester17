@@ -8,6 +8,8 @@ public class TeleportNode : cbInteractiveObject
 	private TeleportationGrid grid;
 	[SerializeField]
 	private Vector2 nodeCoords = new Vector2();
+	[SerializeField]
+	private ParticleSystem sys;
 	private float playerOffset;
 
 	/// <summary>
@@ -24,6 +26,20 @@ public class TeleportNode : cbInteractiveObject
 		nodeCoords = coords;
 		grid = GameObject.FindGameObjectWithTag("TeleportGrid").GetComponent<TeleportationGrid>();
 		playerOffset = offset;
+	}
+
+	public override void SetGazedAt(bool gazedAt)
+	{
+		base.SetGazedAt(gazedAt);
+
+		if(gazedAt)
+		{
+			sys.Play();
+		}
+		else
+		{
+			sys.Stop();
+		}
 	}
 
 	public override void Interact()
