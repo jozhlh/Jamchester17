@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class BridgeSection : cbInteractiveObject
 {
-
-	//[SerializeField]
+	private ParticleController particles;
 	private Vector3 rotationAxis = new Vector3(0,0,1);
 	bool rotate = false;
 	float start;
@@ -17,8 +16,9 @@ public class BridgeSection : cbInteractiveObject
 	bool intro = false;
 
 	// Use this for initialization
-	void Start () {
-		
+	void Start ()
+	{
+		particles = GetComponentInChildren<ParticleController>();
 	}
 	
 	// Update is called once per frame
@@ -66,6 +66,7 @@ public class BridgeSection : cbInteractiveObject
 	public override void Interact()
 	{
 		RotateSection();
+		particles.PlayEffects();
 	}
 
 

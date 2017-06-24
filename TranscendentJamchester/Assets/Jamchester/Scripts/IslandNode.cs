@@ -9,6 +9,8 @@ public class IslandNode : MonoBehaviour
 	private GameObject townSpawner = null;
 	[SerializeField]
 	private GameObject townTrigger = null;
+	[SerializeField]
+	private ParticleSystem particle = null; 
 	private IslandGrid grid;
 	private TeleportationGrid teleportationGrid;
 	[SerializeField]
@@ -78,6 +80,7 @@ public class IslandNode : MonoBehaviour
 		introTimePassed = 0.0f;
 		townSpawner.transform.localPosition = tempPos;
 		intro = true;
+		particle.Play();
 		while(introTimePassed < dur)
 		{
 			tempPos.y = Mathf.SmoothStep(tempPos.y, targetY, introTimePassed / dur);

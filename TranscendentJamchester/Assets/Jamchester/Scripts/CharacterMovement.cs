@@ -11,7 +11,10 @@ public class CharacterMovement : MonoBehaviour
 	private Vector3 direction = new Vector3(0.0f, 0.0f, 0.0f);
 
 	private bool killChar = false;
+	private bool dying = false;
 	private float lifetime = 0.0f;
+	[SerializeField]
+	private ParticleSystem sys;
 
 
 	/// <summary>
@@ -26,11 +29,18 @@ public class CharacterMovement : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		lifetime += Time.deltaTime;
-		transform.SetPositionAndRotation(transform.position + (moveSpeed * direction), transform.rotation);
 		if (killChar)
 		{
 			Destroy(gameObject);
+		}
+		else if (dying)
+		{
+
+		}
+		else
+		{
+			lifetime += Time.deltaTime;
+			transform.SetPositionAndRotation(transform.position + (moveSpeed * direction), transform.rotation);
 		}
 	}
 
@@ -47,7 +57,7 @@ public class CharacterMovement : MonoBehaviour
 	{
 		if (other.tag == "Hazard")
 		{
-			killChar = true;
+			Death();
 		}
 		else if (other.tag == "Town")
 		{
@@ -63,5 +73,13 @@ public class CharacterMovement : MonoBehaviour
 				killChar = true;
 			}
 		}
+	}
+
+	void Death()
+	{
+		dying = true;
+		GetComponentInChildren<AnimPlayer>().gameObject.SetActive(false);
+		sys.Play();
+		Destroy(gameObject, 0.5f);
 	}
 }
