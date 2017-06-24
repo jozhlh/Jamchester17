@@ -52,23 +52,28 @@ public class IslandGrid : MonoBehaviour
 		
 	}
 
-	public bool AddNodes(Vector2 currentNode)
+	public List<Vector3> AddNodes(Vector2 currentNode)
 	{
-		bool nodesAdded = false;
+		List<Vector3> nodeDirections = new List<Vector3>();
+		Vector3 dir = new Vector3(0.0f, 0.0f, 0.0f);
 		coord = currentNode;
 		coord.x -= 1;
 		bridgeSpacingModifier.x = 0.5f;
 		bridgeSpacingModifier.z = 0.0f;
 		if (TryAddIsland())
 		{
-			nodesAdded = true;
+			dir.x = -1;
+			dir.z = 0;
+			nodeDirections.Add(dir);
 		}
 		coord.x = currentNode.x + 1;
 		bridgeSpacingModifier.x = -0.5f;
 		bridgeSpacingModifier.z = 0.0f;
 		if (TryAddIsland())
 		{
-			nodesAdded = true;
+			dir.x = 1;
+			dir.z = 0;
+			nodeDirections.Add(dir);
 		}
 		coord.x = currentNode.x;
 		coord.y = currentNode.y - 1;
@@ -76,16 +81,20 @@ public class IslandGrid : MonoBehaviour
 		bridgeSpacingModifier.z = 0.5f;
 		if (TryAddIsland())
 		{
-			nodesAdded = true;
+			dir.x = 0;
+			dir.z = -1;
+			nodeDirections.Add(dir);
 		}
 		coord.y = currentNode.y + 1;
 		bridgeSpacingModifier.x = 0.0f;
 		bridgeSpacingModifier.z = -0.5f;
 		if (TryAddIsland())
 		{
-			nodesAdded = true;
+			dir.x = 0;
+			dir.z = 1;
+			nodeDirections.Add(dir);
 		}
-		return nodesAdded;
+		return nodeDirections;
 	}
 
 	private bool TryAddIsland()

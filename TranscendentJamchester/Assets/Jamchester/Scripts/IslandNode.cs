@@ -28,7 +28,7 @@ public class IslandNode : MonoBehaviour
 	{
 		townSpawner.SetActive(true);
 		townTrigger.SetActive(false);
-		grid.AddNodes(nodeCoords);
+		townSpawner.GetComponent<Spawner>().SetDirections(grid.AddNodes(nodeCoords));
 	}
 
 	public void SetNodeCoords(Vector2 coords)

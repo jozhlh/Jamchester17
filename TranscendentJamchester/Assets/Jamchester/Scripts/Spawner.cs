@@ -18,6 +18,9 @@ public class Spawner : MonoBehaviour
 	private float counter = 0.0f;
 	private List<GameObject> activePeople = new List<GameObject>();
 	private bool baseFinished = false;
+	private List<Vector3> spawnDirections = new List<Vector3>();
+	[SerializeField]
+	private bool spaceshipIsland = false;
 	
 
 	// Use this for initialization
@@ -67,8 +70,14 @@ public class Spawner : MonoBehaviour
 	{
 		if (counter < 0.0f)
 		{
-			SpawnPerson(defaultSpawnRotation);
-			RemovePeopleToSpawn();
+			if (spaceshipIsland)
+			{
+				SpawnPerson(defaultSpawnRotation);
+			}
+			else
+			{
+				SpawnPeople();
+			}
 			ResetCounter();
 			return true;
 		}
@@ -78,12 +87,27 @@ public class Spawner : MonoBehaviour
 		}
 	}
 
+	private void SpawnPeople()
+	{
+		foreach (Vector3 direction in spawnDirections)
+		{
+			SpawnPerson(direction);
+			RemovePeopleToSpawn();
+		}
+	}
+
 	private void SpawnPerson(Vector3 spawnDirection)
 	{
 		Vector3 spawnPos = transform.position;
 		spawnPos.y += yOffset;
 		activePeople.Add(Instantiate(personToSpawn, spawnPos, transform.rotation));
 		activePeople[activePeople.Count - 1].GetComponent<CharacterMovement>().SetDirection(spawnDirection);
+		RemovePeopleToSpawn();
+	}
+
+	public void SetDirections(List<Vector3> directions)
+	{
+		spawnDirections = directions;
 	}
 
 }

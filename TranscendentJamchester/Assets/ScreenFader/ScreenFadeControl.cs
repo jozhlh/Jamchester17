@@ -8,7 +8,7 @@ public class ScreenFadeControl : MonoBehaviour
     public Material fadeMaterial = null;
 
     // Based on OVRScreenFade
-#if UNITY_ANDROID && !UNITY_EDITOR
+#if (UNITY_ANDROID || UNITY_IOS) && !UNITY_EDITOR
 	void OnCustomPostRender()
 #else
     void OnPostRender()
