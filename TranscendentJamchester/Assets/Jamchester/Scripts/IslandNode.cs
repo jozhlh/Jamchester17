@@ -10,6 +10,7 @@ public class IslandNode : MonoBehaviour
 	[SerializeField]
 	private GameObject townTrigger = null;
 	private IslandGrid grid;
+	private TeleportationGrid teleportationGrid;
 	[SerializeField]
 	private Vector2 nodeCoords = new Vector2();
 
@@ -17,11 +18,7 @@ public class IslandNode : MonoBehaviour
 	void Start ()
 	{
 		grid = GameObject.FindGameObjectWithTag("Grid").GetComponent<IslandGrid>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+		teleportationGrid = GameObject.FindGameObjectWithTag("TeleportGrid").GetComponent<TeleportationGrid>();
 	}
 
 	public void CreateTown()
@@ -29,6 +26,7 @@ public class IslandNode : MonoBehaviour
 		townSpawner.SetActive(true);
 		townTrigger.SetActive(false);
 		townSpawner.GetComponent<Spawner>().SetDirections(grid.AddNodes(nodeCoords));
+		teleportationGrid.AddNodes(nodeCoords);
 	}
 
 	public void SetNodeCoords(Vector2 coords)

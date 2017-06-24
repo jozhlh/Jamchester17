@@ -5,7 +5,7 @@ using UnityEngine;
 public class BridgeSection : cbInteractiveObject
 {
 
-	[SerializeField]
+	//[SerializeField]
 	private Vector3 rotationAxis = new Vector3(0,0,1);
 
 	// Use this for initialization

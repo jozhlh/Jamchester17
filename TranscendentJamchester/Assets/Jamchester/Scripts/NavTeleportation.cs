@@ -20,7 +20,7 @@ public class NavTeleportation : MonoBehaviour
 	}
 
 	public void Update()
-	{
+	{/* 
 		if (counter > -1.0f)
 		{
 			counter -= Time.deltaTime;
@@ -39,7 +39,7 @@ public class NavTeleportation : MonoBehaviour
 			{
 				StartCoroutine(FadeOut());
 			}
-		}
+		}*/
 	}
 
 	IEnumerator FadeOut()
