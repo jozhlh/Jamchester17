@@ -49,6 +49,7 @@ public class IslandNode : MonoBehaviour
 		townSpawner.SetActive(true);
 		townTrigger.SetActive(false);
 		townSpawner.GetComponent<Spawner>().SetDirections(grid.AddNodes(nodeCoords));
+		StartCoroutine(LerpCityUp(1.0f));
 		teleportationGrid.AddNodes(nodeCoords);
 	}
 
@@ -65,6 +66,28 @@ public class IslandNode : MonoBehaviour
 		transform.localPosition = startPos;
 		transform.localScale = new Vector3(0.0f, 0.0f, 0.0f);
 		StartCoroutine(LerpSectionUp(introDuration, targetY));
+	}
+
+	IEnumerator LerpCityUp(float dur)
+	{
+		float targetY = townSpawner.transform.localPosition.y;
+		Vector3 tempPos = townSpawner.transform.localPosition;
+		tempPos.y = -10.0f;
+		float introStart  = Time.time;
+		float scaleMod = 0.0f;
+		introTimePassed = 0.0f;
+		townSpawner.transform.localPosition = tempPos;
+		intro = true;
+		while(introTimePassed < dur)
+		{
+			tempPos.y = Mathf.SmoothStep(tempPos.y, targetY, introTimePassed / dur);
+			scaleMod = Mathf.SmoothStep(scaleMod, 0.3f, introTimePassed / dur);
+			townSpawner.transform.localPosition = tempPos;
+			townSpawner.transform.localScale = new Vector3(scaleMod, scaleMod, scaleMod);
+			yield return null;
+		}
+		intro = false;
+		yield return null;
 	}
 	
 	IEnumerator LerpSectionUp(float dur, float targetY)
