@@ -47,6 +47,7 @@ public class CharacterMovement : MonoBehaviour
 	public void SetDirection(Vector3 nuDirection)
 	{
 		direction = nuDirection;
+		//transform.LookAt(direction);
 	}
 
 	/// <summary>

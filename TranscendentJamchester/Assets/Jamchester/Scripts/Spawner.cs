@@ -132,7 +132,27 @@ public class Spawner : MonoBehaviour
 	{
 		Vector3 spawnPos = transform.position;
 		spawnPos.y += yOffset;
-		activePeople.Add(Instantiate(personToSpawn, spawnPos, transform.rotation));
+		//Vector3 cross = Vector3.Cross(spawnDirection, Vector3.back);
+		Quaternion rot = Quaternion.FromToRotation(Vector3.up, Vector3.back);
+		Vector3 eulers = transform.rotation.eulerAngles;
+		if (spawnDirection == Vector3.right)
+		{
+			eulers.y = 0.0f;
+		}
+		else if (spawnDirection == -Vector3.right)
+		{
+			eulers.y = 180.0f;
+		}
+		else if (spawnDirection == Vector3.back)
+		{
+			eulers.y = 90.0f;
+		}
+		else if (spawnDirection == Vector3.forward)
+		{
+			eulers.y = -90.0f;
+		}
+		rot = Quaternion.Euler(eulers);
+		activePeople.Add(Instantiate(personToSpawn, spawnPos, rot));
 		activePeople[activePeople.Count - 1].GetComponent<CharacterMovement>().SetDirection(spawnDirection);
 	}
 
