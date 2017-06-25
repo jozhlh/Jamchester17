@@ -12,6 +12,9 @@ public class Spawner : MonoBehaviour
 	private float spawnCounter = 10.0f;
 	[SerializeField]
 	private GameObject personToSpawn = null;
+	//[SerializeField]
+	private float waitTime = 8.0f;
+	private float waitCounter = 0;
 	[SerializeField]
 	private float yOffset = 0.0f;
 
@@ -40,6 +43,21 @@ public class Spawner : MonoBehaviour
 			ReduceCounter();
 			CheckCounter();
 		}
+		else
+		{
+			if (peopleToSpawn > 0)
+			{
+				baseFinished = false;
+				if (waitCounter < 0)
+				{
+					GetComponentInParent<IslandNode>().SetCityActive();
+				}
+			}
+			else
+			{
+				waitCounter -= Time.deltaTime;
+			}
+		}
 	}
 
 	public void SetPeopleToSpawn(int numOfPeople)
@@ -64,8 +82,12 @@ public class Spawner : MonoBehaviour
 		ui.UpdateUi(peopleToSpawn);
 		if (peopleToSpawn < 1)
 		{
-			baseFinished = true;
-			GetComponentInParent<IslandNode>().SetCityInactive();
+			if (!baseFinished)
+			{
+				baseFinished = true;
+				waitCounter = waitTime;
+				StartCoroutine(WaitForInactivity());
+			}
 		}
 	}
 
@@ -82,6 +104,7 @@ public class Spawner : MonoBehaviour
 			if (spaceshipIsland)
 			{
 				SpawnPerson(defaultSpawnRotation);
+				RemovePeopleToSpawn();
 			}
 			else
 			{
@@ -111,12 +134,21 @@ public class Spawner : MonoBehaviour
 		spawnPos.y += yOffset;
 		activePeople.Add(Instantiate(personToSpawn, spawnPos, transform.rotation));
 		activePeople[activePeople.Count - 1].GetComponent<CharacterMovement>().SetDirection(spawnDirection);
-		RemovePeopleToSpawn();
 	}
 
 	public void SetDirections(List<Vector3> directions)
 	{
 		spawnDirections = directions;
+	}
+
+	IEnumerator WaitForInactivity()
+	{
+		while (waitCounter > 0.0f)
+		{
+			yield return null;
+		}
+		GetComponentInParent<IslandNode>().SetCityInactive();
+		yield break;
 	}
 
 }

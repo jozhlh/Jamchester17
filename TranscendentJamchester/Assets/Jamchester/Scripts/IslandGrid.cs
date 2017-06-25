@@ -112,12 +112,13 @@ public class IslandGrid : MonoBehaviour
 		}
 		if (addedNode)
 		{
-			activeCities++;
+			//activeCities++;
 		}
 		else
 		{
 			//TODO: if a city is built on landlocked island - just exit
 			activeCities = 0;
+			Debug.Log("That weird exception that I'm not sure ever happens");
 			nodeDirections.Add(new Vector3(0.0f,0,0));
 		}
 		return nodeDirections;
@@ -176,5 +177,12 @@ public class IslandGrid : MonoBehaviour
 	public void RemoveActiveCity()
 	{
 		activeCities--;
+		Debug.Log("Cities: " + activeCities);
+	}
+
+	public void AddActiveCity()
+	{
+		activeCities++;
+		Debug.Log("Cities: " + activeCities);
 	}
 }

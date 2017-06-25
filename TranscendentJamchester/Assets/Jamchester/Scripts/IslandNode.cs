@@ -57,12 +57,19 @@ public class IslandNode : MonoBehaviour
 		teleportationGrid.AddNodes(nodeCoords);
 		grid.GetComponent<Score>().IncreaseScore();
 		cityActive = true;
+		grid.AddActiveCity();
 	}
 
 	public void SetCityInactive()
 	{
 		cityActive = false;
 		grid.RemoveActiveCity();
+	}
+
+	public void SetCityActive()
+	{
+		cityActive = true;
+		grid.AddActiveCity();
 	}
 
 	public void SetNodeCoords(Vector2 coords)
@@ -105,7 +112,6 @@ public class IslandNode : MonoBehaviour
 	
 	IEnumerator LerpSectionUp(float dur, float targetY)
 	{
-		Debug.Log("Start raising island");
 		float introStart  = Time.time;
 		float scaleMod = 0.0f;
 		introTimePassed = 0.0f;
