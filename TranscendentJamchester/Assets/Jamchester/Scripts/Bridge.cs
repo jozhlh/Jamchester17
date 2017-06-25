@@ -12,10 +12,10 @@ public class Bridge : MonoBehaviour {
 	private float sectionOffset = 1.0f;
 	[SerializeField]
 	private float startSectionOffset = -50.0f;
-	[SerializeField]
-	private float stagger = 0.5f;
 	//[SerializeField]
-	private float introDuration = 1.0f;
+	private float stagger = 0.25f;
+	//[SerializeField]
+	private float introDuration = 3.0f;
 	[SerializeField]
 	private float sectionYoffset = 1.0f;
 	[SerializeField]

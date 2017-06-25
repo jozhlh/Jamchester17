@@ -15,11 +15,11 @@ public class IslandNode : MonoBehaviour
 	private TeleportationGrid teleportationGrid;
 	[SerializeField]
 	private Vector2 nodeCoords = new Vector2();
-	float startOffset = -20.0f;
+	float startOffset = -10.0f;
 
 	float introTimePassed = 0.0f;
 	bool intro = false;
-	float introDuration = 5.0f;
+	float introDuration = 10.0f;
 	[SerializeField]
 	bool hasIntro = true;
 	bool cityActive = false;
@@ -53,7 +53,7 @@ public class IslandNode : MonoBehaviour
 		townSpawner.SetActive(true);
 		townTrigger.SetActive(false);
 		townSpawner.GetComponent<Spawner>().SetDirections(grid.AddNodes(nodeCoords));
-		StartCoroutine(LerpCityUp(1.0f));
+		StartCoroutine(LerpCityUp(2.5f));
 		teleportationGrid.AddNodes(nodeCoords);
 		grid.GetComponent<Score>().IncreaseScore();
 		cityActive = true;
