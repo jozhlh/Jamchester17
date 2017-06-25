@@ -56,7 +56,7 @@ public class BridgeSection : cbInteractiveObject
 	public void SetRotationAxis(Vector3 axis)
 	{
 		rotationAxis = axis;
-		int rotAmount = Random.Range(0, 3);
+		int rotAmount = Random.Range(0, 4);
 		transform.Rotate(rotationAxis, rotAmount * 90.0f);
 	}
 
@@ -81,7 +81,7 @@ public class BridgeSection : cbInteractiveObject
 		}
 		float progress = timePassed / duration;
 		
-		return Vector3.Slerp(startAngle, targetAngle, progress);
+		return Vector3.Lerp(startAngle, targetAngle, progress);
 	}
 
 	public void RaiseSection(Vector3 targetPosition, float raiseDuration)
