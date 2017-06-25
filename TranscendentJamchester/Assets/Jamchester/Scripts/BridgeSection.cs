@@ -56,6 +56,8 @@ public class BridgeSection : cbInteractiveObject
 	public void SetRotationAxis(Vector3 axis)
 	{
 		rotationAxis = axis;
+		int rotAmount = Random.Range(0, 3);
+		transform.Rotate(rotationAxis, rotAmount * 90.0f);
 	}
 
 	public override void SetGazedAt(bool gazedAt)

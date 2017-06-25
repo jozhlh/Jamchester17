@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class IslandGrid : MonoBehaviour
 {
+	[SerializeField]
+	private LevelManager levelManager;
 	[Header("Bridge Parameters")]
 	[SerializeField]
 	private GameObject bridgePrefab;
@@ -33,6 +35,7 @@ public class IslandGrid : MonoBehaviour
 	private List<GameObject> bridges = new List<GameObject>();
 	private Vector2 coord = new Vector2();
 	private Vector3 bridgeSpacingModifier = new Vector3(0.0f, 0.0f, 0.0f);
+	private int activeCities = 0;
 
 	// Use this for initialization
 	void Start ()
@@ -44,16 +47,25 @@ public class IslandGrid : MonoBehaviour
 		coord.x = xStartCoord;
 		coord.y = zStartCoord;
 		islandNodes.Add(coord, startingIsland);
+		activeCities = 1;
 	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
-		
+		if (activeCities < 1)
+		{
+			// GameLoss
+			GameObject.FindGameObjectWithTag("Score").GetComponent<ScoreKeeper>().AddToScores(GetComponent<Score>().GetScore());
+			Debug.Log("Score" + GetComponent<Score>().GetScore());
+			Debug.Log("ScoresList" + GameObject.FindGameObjectWithTag("Score").GetComponent<ScoreKeeper>().GetLatestScore());
+			levelManager.LoadLevel("sceneMenu2");
+		}
 	}
 
 	public List<Vector3> AddNodes(Vector2 currentNode)
 	{
+		bool addedNode = false;
 		List<Vector3> nodeDirections = new List<Vector3>();
 		Vector3 dir = new Vector3(0.0f, 0.0f, 0.0f);
 		coord = currentNode;
@@ -65,6 +77,7 @@ public class IslandGrid : MonoBehaviour
 			dir.x = -1;
 			dir.z = 0;
 			nodeDirections.Add(dir);
+			addedNode = true;
 		}
 		coord.x = currentNode.x + 1;
 		bridgeSpacingModifier.x = -0.5f;
@@ -74,6 +87,7 @@ public class IslandGrid : MonoBehaviour
 			dir.x = 1;
 			dir.z = 0;
 			nodeDirections.Add(dir);
+			addedNode = true;
 		}
 		coord.x = currentNode.x;
 		coord.y = currentNode.y - 1;
@@ -84,6 +98,7 @@ public class IslandGrid : MonoBehaviour
 			dir.x = 0;
 			dir.z = -1;
 			nodeDirections.Add(dir);
+			addedNode = true;
 		}
 		coord.y = currentNode.y + 1;
 		bridgeSpacingModifier.x = 0.0f;
@@ -93,6 +108,17 @@ public class IslandGrid : MonoBehaviour
 			dir.x = 0;
 			dir.z = 1;
 			nodeDirections.Add(dir);
+			addedNode = true;
+		}
+		if (addedNode)
+		{
+			activeCities++;
+		}
+		else
+		{
+			//TODO: if a city is built on landlocked island - just exit
+			activeCities = 0;
+			nodeDirections.Add(new Vector3(0.0f,0,0));
 		}
 		return nodeDirections;
 	}
@@ -145,5 +171,10 @@ public class IslandGrid : MonoBehaviour
 		{
 			return rot;
 		}
+	}
+
+	public void RemoveActiveCity()
+	{
+		activeCities--;
 	}
 }

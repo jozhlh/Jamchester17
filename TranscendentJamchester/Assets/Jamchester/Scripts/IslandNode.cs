@@ -22,6 +22,7 @@ public class IslandNode : MonoBehaviour
 	float introDuration = 5.0f;
 	[SerializeField]
 	bool hasIntro = true;
+	bool cityActive = false;
 
 	// Use this for initialization
 	void Start ()
@@ -33,6 +34,7 @@ public class IslandNode : MonoBehaviour
 			CreateIsland();
 		}
 		particle = GetComponentInChildren<ParticleSystem>();
+		
 	}
 
 	/// <summary>
@@ -53,6 +55,14 @@ public class IslandNode : MonoBehaviour
 		townSpawner.GetComponent<Spawner>().SetDirections(grid.AddNodes(nodeCoords));
 		StartCoroutine(LerpCityUp(1.0f));
 		teleportationGrid.AddNodes(nodeCoords);
+		grid.GetComponent<Score>().IncreaseScore();
+		cityActive = true;
+	}
+
+	public void SetCityInactive()
+	{
+		cityActive = false;
+		grid.RemoveActiveCity();
 	}
 
 	public void SetNodeCoords(Vector2 coords)

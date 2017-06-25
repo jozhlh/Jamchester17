@@ -21,12 +21,15 @@ public class Spawner : MonoBehaviour
 	private List<Vector3> spawnDirections = new List<Vector3>();
 	[SerializeField]
 	private bool spaceshipIsland = false;
+	[SerializeField]
+	private UiManager ui;
 	
-
 	// Use this for initialization
 	void Start ()
 	{
 		counter = spawnCounter;
+		ui.GetFields();
+		ui.UpdateUi(peopleToSpawn);
 	}
 	
 	// Update is called once per frame
@@ -42,6 +45,7 @@ public class Spawner : MonoBehaviour
 	public void SetPeopleToSpawn(int numOfPeople)
 	{
 		peopleToSpawn = numOfPeople;
+		ui.UpdateUi(peopleToSpawn);
 	}
 
 	private void ResetCounter()
@@ -57,16 +61,20 @@ public class Spawner : MonoBehaviour
 	private void RemovePeopleToSpawn()
 	{
 		peopleToSpawn--;
+		ui.UpdateUi(peopleToSpawn);
 		if (peopleToSpawn < 1)
 		{
 			baseFinished = true;
+			GetComponentInParent<IslandNode>().SetCityInactive();
 		}
 	}
 
 	public void AddPerson()
 	{
 		peopleToSpawn++;
+		ui.UpdateUi(peopleToSpawn);
 	}
+
 	private bool CheckCounter()
 	{
 		if (counter < 0.0f)
